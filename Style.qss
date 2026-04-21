@@ -1,0 +1,126 @@
+QWidget {
+    background-color: white;
+    color: black;
+}
+
+QMenuBar {
+    background-color: #43517a;
+    color: black;
+    padding: 5px;
+}
+
+QMenuBar::item {
+    background-color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+QMenuBar::item:selected {
+    background-color: #e3e3e3;
+}
+
+QToolBar {
+    background-color: #525252;
+    padding: 5px;
+}
+
+QToolButton {
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+QToolButton:hover {
+    background-color: #e3e3e3;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+#container {
+    background-color: #e3e3e3;
+    border-radius: 4px;
+}
+
+#container QLabel {
+    background-color: #e3e3e3;
+}
+
+#container QLineEdit {
+    padding: 5px;
+}
+
+QTableWidget {
+    background-color: white;   
+    color: black;               
+    gridline-color: #e3e3e3;     
+    border: none;
+    font-size: 13px;
+    outline: none;
+}
+
+QTableWidget::item:selected {
+    background-color: #dbebff;
+    color: black;
+    border: none;
+}
+
+QHeaderView::section {
+    background-color: #333333;
+    color: white;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+QTableCornerButton::section {
+    background-color: #333333;
+}
+
+QDialog {
+    background-color: #8f8f8f;
+}
+
+QDialog QLabel {
+    background-color: transparent;
+    color: white;
+}
+
+QDialog QLineEdit, QSpinBox, QTimeEdit, QComboBox {
+    padding: 5px;
+    padding-right: 25px; 
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: white;
+}
+
+QSpinBox::up-button, QTimeEdit::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 20px;
+    background-color: #f0f0f0;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 3px;
+}
+
+QSpinBox::down-button, QTimeEdit::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 20px;
+    background-color: #f0f0f0;
+    border-left: 1px solid #ccc;
+    border-bottom-right-radius: 3px;
+}
+
+QSpinBox::up-button:hover, QSpinBox::down-button:hover, QTimeEdit::up-button:hover, QTimeEdit::down-button:hover {
+    background-color: #e0e0e0;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left: 1px solid #ccc;
+}
