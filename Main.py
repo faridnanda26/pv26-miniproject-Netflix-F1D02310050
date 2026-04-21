@@ -1,7 +1,13 @@
+"""
+Nama    : Farid Nanda Syauqi
+NIM     : F1D02310050
+Kelas   : C
+"""
+
 import sys
 from PySide6.QtWidgets import QApplication
 
-# Import dari module kita
+# Import dari module
 from Database.DB_Manager import DatabaseManager
 from UI.Main_Window import MainWindow
 
@@ -18,17 +24,18 @@ def main():
     # 1. Buat aplikasi
     app = QApplication(sys.argv)
 
+    # 2. Terapkan style qss eksternal
     stylesheet = load_stylesheet("Style.qss")
     app.setStyleSheet(stylesheet)
     
-    # 2. Buat database manager
+    # 3. Buat database manager
     db = DatabaseManager('Netflix.db')
     
-    # 3. Buat window, kirim db sebagai parameter
+    # 4. Buat window, kirim db sebagai parameter
     window = MainWindow(db)
     window.show()
     
-    # 4. Jalankan
+    # 5. Jalankan
     sys.exit(app.exec())
 
 

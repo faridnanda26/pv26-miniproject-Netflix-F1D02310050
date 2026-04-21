@@ -8,6 +8,7 @@ from PySide6.QtCore import QTime
 
 from Logic.Validator import Validator
 
+# Dialog input data
 class MovieInputDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -27,7 +28,7 @@ class MovieInputDialog(QDialog):
         
         # Duration
         self.duration_input = QTimeEdit()
-        self.duration_input.setDisplayFormat("h 'Hours' m 'Minutes'") 
+        self.duration_input.setDisplayFormat("h 'Hours' m 'Minutes'") # atur format
         self.duration_input.setTime(QTime(1, 30))
         form_layout.addRow("Duration:", self.duration_input)
 
@@ -56,8 +57,9 @@ class MovieInputDialog(QDialog):
         
         layout.addWidget(button_box)
 
+    # Validasi data yang diinputkan
     def validate_and_accept(self):
-        valid, error = Validator.title_validation(self.title_input.text())
+        valid, error = Validator.title_validation(self.title_input.text()) # cek title valid
 
         if not valid:
             QMessageBox.warning(
@@ -68,8 +70,9 @@ class MovieInputDialog(QDialog):
             self.title_input.setFocus()
             return
         
-        self.accept()
+        self.accept() # close dengan status accept bila valid
 
+    # Mengambil data yang diinputkan
     def get_data(self):
         return {
             "title": self.title_input.text().strip(),
@@ -77,9 +80,10 @@ class MovieInputDialog(QDialog):
             "genre": self.genre_input.currentText(),
             "year": self.year_input.value()
         }
-    
+
+# Dialog untuk update data
 class MovieUpdateDialog(QDialog):
-    def __init__(self, parent=None, data=None):
+    def __init__(self, parent=None, data=None): # data sebelum update
         super().__init__(parent)
         self.setWindowTitle("Update A Movie")
         self.setMinimumWidth(400)
@@ -95,7 +99,7 @@ class MovieUpdateDialog(QDialog):
         
         # Title
         self.title_input = QLineEdit()
-        self.title_input.setText(self.data["title"])
+        self.title_input.setText(self.data["title"]) # title lama
         form_layout.addRow("Title:", self.title_input)
         
         # Duration
@@ -103,7 +107,7 @@ class MovieUpdateDialog(QDialog):
         self.duration_input.setDisplayFormat("h 'Hours' m 'Minutes'") 
         duration_object = QTime.fromString(self.data["duration"], "HH:mm")
         if duration_object.isValid():
-            self.duration_input.setTime(duration_object)
+            self.duration_input.setTime(duration_object) # duration lama
         else:
             self.duration_input.setTime(QTime(1, 0)) 
         form_layout.addRow("Duration:", self.duration_input)
@@ -114,7 +118,7 @@ class MovieUpdateDialog(QDialog):
             "Action", "Adventure", "Comedy", "Drama", "Horror",
             "Animation", "Romance", "Sci-Fi", "Thriller"
         ])
-        self.genre_input.setCurrentText(self.data["genre"])
+        self.genre_input.setCurrentText(self.data["genre"]) # genre lama
         form_layout.addRow("Genre", self.genre_input)
 
         # Year
@@ -122,7 +126,7 @@ class MovieUpdateDialog(QDialog):
         self.year_input.setRange(1888, 2030) 
         self.year_input.setValue(2026)
         self.year_input.setGroupSeparatorShown(False)
-        self.year_input.setValue(self.data["year"])
+        self.year_input.setValue(self.data["year"]) # year lama
         form_layout.addRow("Year", self.year_input)
 
         layout.addLayout(form_layout)

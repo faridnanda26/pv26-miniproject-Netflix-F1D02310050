@@ -2,12 +2,11 @@ import csv
 import sqlite3
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
-    QHBoxLayout, QLineEdit, QPushButton, QLabel, QSpinBox,
-    QTimeEdit, QTableWidget, QTableWidgetItem, QMessageBox,
-    QStyle, QDialog, QFormLayout, QFileDialog
+    QHBoxLayout, QLineEdit, QLabel, QTableWidget, 
+    QTableWidgetItem, QMessageBox, QStyle, QDialog, QFileDialog
 )
 
-from PySide6.QtGui import QAction, QKeySequence, QIcon
+from PySide6.QtGui import QAction, QIcon
 from PySide6.QtCore import Qt
 
 from CustomDialogs.Dialogs import MovieInputDialog, MovieUpdateDialog
@@ -47,8 +46,8 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(container_search)
 
-        self.table = QTableWidget()
-        self.table.setColumnCount(5)
+        self.table = QTableWidget() # Tabel untuk display data
+        self.table.setColumnCount(5) 
         self.table.setHorizontalHeaderLabels(["ID", "Title", "Duration", "Genre", "Year"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -57,19 +56,18 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(self.table)
 
-
     def create_actions(self):
         style = self.style()
 
         # About
         self.about_action = QAction("About", self)
-        self.about_action.setIcon(style.standardIcon(QStyle.SP_MessageBoxInformation))
+        self.about_action.setIcon(style.standardIcon(QStyle.SP_MessageBoxInformation)) # default icon
         self.about_action.setStatusTip("About")
         self.about_action.triggered.connect(self.show_version)
 
         # Add
         self.add_action = QAction("Add", self)
-        self.add_action.setIcon(QIcon("Icons/add.png"))
+        self.add_action.setIcon(QIcon("Icons/add.png")) # icon custom
         self.add_action.setStatusTip("Add New Movie")
         self.add_action.triggered.connect(self.add_movie)
 
@@ -105,16 +103,19 @@ class MainWindow(QMainWindow):
         file_toolbar.addAction(self.update_action)
         file_toolbar.addAction(self.export_action)
 
+    # Membuat window ditengah layar
     def center_on_screen(self):
         screen = QApplication.primaryScreen().geometry()
         x = (screen.width() - self.width()) // 2
         y = (screen.height() - self.height()) // 2
         self.move(x, y)
 
+    # ambil dan load data ke tabel
     def load_data(self):
         data = self.db.get_all()
         self.show_to_table(data)
 
+    # masukkan ke tabel
     def show_to_table(self, data):
         self.table.setRowCount(0)
         for row_data in data:
@@ -126,13 +127,14 @@ class MainWindow(QMainWindow):
             self.table.setItem(row, 3, QTableWidgetItem(row_data['genre']))
             self.table.setItem(row, 4, QTableWidgetItem(str(row_data['year'])))
 
+    # tambah data
     def add_movie(self):
-        dialog = MovieInputDialog(self)
+        dialog = MovieInputDialog(self) # Custom dialog
         
         if dialog.exec() == QDialog.Accepted:
             data = dialog.get_data()
             try:
-                self.db.add(data["title"], data["duration"], data["genre"], data["year"])
+                self.db.add(data["title"], data["duration"], data["genre"], data["year"]) # masukkan ke database
                 QMessageBox.information(self, "Success", "Movie added!")
                 
                 self.load_data()
@@ -143,10 +145,10 @@ class MainWindow(QMainWindow):
     def id_selection(self):
         row = self.table.currentRow()
         if row >= 0:
-            self.selected_id = int(self.table.item(row, 0).text())
+            self.selected_id = int(self.table.item(row, 0).text()) # Menangkap id data yang di select
 
     def delete_movie(self):
-        if not self.selected_id:
+        if not self.selected_id: # cek id yang di select
             QMessageBox.warning(
                 self, 
                 "Warning",
@@ -154,13 +156,13 @@ class MainWindow(QMainWindow):
             )
             return
         
-        reply = QMessageBox.question(self, "Confirmation", "Are you sure you want to delete this movie?")
+        reply = QMessageBox.question(self, "Confirmation", "Are you sure you want to delete this movie?") # Konfirmasi sebelum delete
         if reply == QMessageBox.Yes:
             self.db.delete(self.selected_id)
             self.load_data()
 
     def update_movie(self):
-        if not self.selected_id:
+        if not self.selected_id: # cek id yang di select
             QMessageBox.warning(
                 self, 
                 "Warning",
@@ -168,7 +170,7 @@ class MainWindow(QMainWindow):
             )
             return
         
-        data = self.db.find(self.selected_id)
+        data = self.db.find(self.selected_id) # cari data yg mau di update
         data_dict = data[0]
 
         dialog = MovieUpdateDialog(self, data_dict)
@@ -186,8 +188,9 @@ class MainWindow(QMainWindow):
         
     def find_movie(self, text):
         searched_movie = self.db.find(text) if text else self.db.get_all()
-        self.show_to_table(searched_movie)
+        self.show_to_table(searched_movie) # update data yang di display pada tabel
 
+    # Fungsi untuk menubar 
     def show_version(self):
         version_info = (
             "Netflix Movie Manager\n"
@@ -203,6 +206,7 @@ class MainWindow(QMainWindow):
             version_info
         )
 
+    # Fungsi untuk menulis file csv
     def export_csv(self):
         filepath, _ = QFileDialog.getSaveFileName(
             self, "Export CSV", "Netflix.csv", "CSV Files (*.csv)"
